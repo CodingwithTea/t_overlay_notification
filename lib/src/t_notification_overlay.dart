@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../t_overlay_notification.dart';
-import 'enums.dart';
 
 /// A utility class for managing overlay notifications in Flutter.
 /// This class allows creating styled notifications (success, error, warning, info)
@@ -10,22 +9,32 @@ class TNotificationOverlay {
   // A list to track active notifications.
   static final List<OverlayEntry> _notifications = [];
 
-  // Notification item height and spacing between items.
-  static const double _notificationHeight = 70.0;
-  static const double _notificationSpacing = 8.0;
-
   /// Displays a notification with a specific type, title, and message.
   ///
   /// [title] is the title of the notification.
-  /// [message] is the detailed message of the notification.
+  /// [subTitle] is the detailed message of the notification.
   /// [type] determines the style (success, error, warning, info).
   /// [duration] defines how long the notification will remain visible (default is 3 seconds).
+  /// [spacing] allows customization of the space between notifications (default is 10.0).
+  /// [position] defines the corner where notifications will appear (default is topRight).
   static void show({
-    required String title,
-    required String message,
-    required NotificationType type,
-    Duration duration = const Duration(seconds: 3),
     required BuildContext context,
+    required Widget title,
+    Widget? subTitle,
+    NotificationType type = NotificationType.info,
+    Duration duration = const Duration(seconds: 3),
+    double spacing = 10,
+    double height = 100,
+    double? width,
+    Color? titleColor,
+    Color? messageColor,
+    Color? backgroundColor,
+    Color? borderColor,
+    double? borderRadius,
+    Color? iconColor,
+    double? paddingVertical,
+    double? paddingHorizontal,
+    NotificationPosition position = NotificationPosition.topRight,
   }) {
     // Obtain the current overlay from the context.
     final overlay = Navigator.of(context).overlay;
@@ -35,23 +44,48 @@ class TNotificationOverlay {
 
     overlayEntry = OverlayEntry(
       builder: (context) {
-        return AnimatedPositioned(
-          duration: const Duration(milliseconds: 300),
-          // Smooth animation for appearance.
-          curve: Curves.easeInOut,
-          // Animation curve for better UX.
-          top: 20.0 +
-              (_notifications.indexOf(overlayEntry) *
-                  (_notificationHeight + _notificationSpacing)),
-          // Calculate position based on existing notifications.
-          right: 20.0,
-          child: TNotificationWidget(
-            title: title,
-            message: message,
-            type: type,
-            onClose: () {
-              _removeNotification(overlayEntry);
-            },
+        // Determine the alignment based on user-specified position.
+        Alignment alignment;
+        switch (position) {
+          case NotificationPosition.topLeft:
+            alignment = Alignment.topLeft;
+            break;
+          case NotificationPosition.topRight:
+            alignment = Alignment.topRight;
+            break;
+          case NotificationPosition.bottomLeft:
+            alignment = Alignment.bottomLeft;
+            break;
+          case NotificationPosition.bottomRight:
+            alignment = Alignment.bottomRight;
+            break;
+        }
+
+        final offset = (_notifications.indexOf(overlayEntry) * (height + spacing));
+
+        return Align(
+          alignment: alignment,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: (position == NotificationPosition.topLeft || position == NotificationPosition.topRight) ? offset : 0,
+              bottom: (position == NotificationPosition.bottomLeft || position == NotificationPosition.bottomRight) ? offset : 0,
+            ),
+            child: TNotificationWidget(
+              title: title,
+              subTitle: subTitle,
+              onClose: () => _removeNotification(overlayEntry),
+              type: type,
+              width: width,
+              paddingHorizontal: paddingHorizontal,
+              paddingVertical: paddingVertical,
+              titleColor: titleColor,
+              messageColor: messageColor,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              borderRadius: borderRadius,
+              iconColor: iconColor,
+              duration: duration,
+            ),
           ),
         );
       },
@@ -74,7 +108,7 @@ class TNotificationOverlay {
       // Remove the overlay entry from the overlay.
       overlayEntry.remove();
 
-      // Rebuild the positions of remaining notifications.
+      // Trigger a rebuild of the remaining notifications.
       for (var entry in _notifications) {
         entry.markNeedsBuild();
       }
