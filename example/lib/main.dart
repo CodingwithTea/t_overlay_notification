@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.success(
                       context: context,
                       title: Text('Success Notification'),
-                      subTitle: Text('This is a success notification. \n Expanding to line two.'),
+                      subTitle: Text(
+                          'This is a success notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Success Notification'),
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.warning(
                       context: context,
                       title: Text('Warning Notification'),
-                      subTitle: Text('This is a Warning notification. \n Expanding to line two.'),
+                      subTitle: Text(
+                          'This is a Warning notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Warning Notification'),
@@ -44,7 +46,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.error(
                       context: context,
                       title: Text('Error Notification'),
-                      subTitle: Text('This is a Error notification. \n Expanding to line two.'),
+                      subTitle: Text(
+                          'This is a Error notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Error Notification'),
@@ -55,7 +58,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.info(
                       context: context,
                       title: Text('Info Notification'),
-                      subTitle: Text('This is a Info notification. \n Expanding to line two.'),
+                      subTitle: Text(
+                          'This is a Info notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Info Notification'),
@@ -97,7 +101,8 @@ class MyApp extends StatelessWidget {
                       context: context,
                       width: 350,
                       spacing: 30,
-                      title: Text('Warning Notification', style: Theme.of(context).textTheme.titleLarge),
+                      title: Text('Warning Notification',
+                          style: Theme.of(context).textTheme.titleLarge),
                       subTitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -105,7 +110,8 @@ class MyApp extends StatelessWidget {
                           const SizedBox(height: 12),
                           Row(
                             children: [
-                              TextButton(onPressed: () {}, child: Text('Dismiss')),
+                              TextButton(
+                                  onPressed: () {}, child: Text('Dismiss')),
                               const SizedBox(width: 8),
                               TextButton(onPressed: () {}, child: Text('Undo'))
                             ],
