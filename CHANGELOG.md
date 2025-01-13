@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.4
+- Introduced New **Animations**: Added support for **slide-in** **slide-out** and **fade-out** animations for more engaging notifications.
+- Fixed Dynamic **Height Calculation**: Improved notification stacking by dynamically calculating the height of each notification, ensuring consistent spacing between them.
+- Bug Fixes: Addressed various layout issues, including proper positioning and removing notifications after the specified duration.
+- Performance Improvements: Optimized the overlay handling for better performance, especially with a large number of notifications.
+- Enhanced Customization: Added more control over animations, allowing users to specify both slide-in and slide-out directions.
+
 ## 0.0.3
 - Added **LinerProgressIndicator** feature for interactive countdown notifications.
 - Improved **Design** with a more modern, sleek look for notifications.

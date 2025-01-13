@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../t_overlay_notification.dart';
@@ -8,7 +10,6 @@ class TNotificationWidget extends StatefulWidget {
   final NotificationType type;
   final VoidCallback onClose;
 
-  // Optional parameters with default values
   final Color? backgroundColor;
   final Color? borderColor;
   final Color? titleColor;
@@ -43,50 +44,48 @@ class TNotificationWidget extends StatefulWidget {
 }
 
 class _TNotificationWidgetState extends State<TNotificationWidget> {
-  double _sliderValue = 1.0; // Starts with a full slider.
+  late double _progressValue; // Initialize slider value dynamically.
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _progressValue = 1.0;
     _startSliderCountdown();
   }
 
   void _startSliderCountdown() {
-    final durationMilliseconds = widget.duration.inMilliseconds - 250;
-    final int updateInterval = 50; // Interval in milliseconds for slider updates.
-    final double decrementStep = updateInterval / durationMilliseconds;
+    final int totalDuration = widget.duration.inMilliseconds;
+    const int updateInterval = 50; // 50 ms update interval.
+    final double decrementStep = updateInterval / totalDuration;
 
-    // Perform the first update immediately before the delay.
-    setState(() {
-      _sliderValue -= decrementStep;
-      if (_sliderValue <= 0) {
-        _sliderValue = 0; // Ensure the slider value is precisely 0.
-        widget.onClose(); // Close the notification.
-      }
-    });
+    _timer = Timer.periodic(Duration(milliseconds: updateInterval), (timer) {
+      if (!mounted) return;
 
-    // Start the periodic updates.
-    Future.doWhile(() async {
-      await Future.delayed(Duration(milliseconds: updateInterval));
       setState(() {
-        _sliderValue -= decrementStep;
-        if (_sliderValue <= 0) {
-          _sliderValue = 0; // Ensure the slider value is precisely 0.
-          widget.onClose(); // Close the notification.
+        _progressValue -= decrementStep;
+        if (_progressValue <= 0) {
+          _progressValue = 0; // Ensure the value is exactly 0.
+          _timer?.cancel(); // Stop the timer.
+          widget.onClose(); // Trigger the close callback.
         }
       });
-      return _sliderValue > 0; // Continue the loop until the slider reaches 0.
     });
   }
 
   @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer when the widget is disposed.
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Default values for colors and dimensions
     final Map<NotificationType, Color> defaultTypeColors = {
-      NotificationType.success: Color(0xFF4CAF50), // Custom soft green
-      NotificationType.error: Color(0xFFF44336), // Custom soft red
-      NotificationType.warning: Color(0xFFFFC107), // Custom amber yellow
-      NotificationType.info: Color(0xFF2196F3), // Custom blue
+      NotificationType.success: const Color(0xFF4CAF50),
+      NotificationType.error: const Color(0xFFF44336),
+      NotificationType.warning: const Color(0xFFFFC107),
+      NotificationType.info: const Color(0xFF2196F3),
     };
 
     final Map<NotificationType, IconData> typeIcons = {
@@ -96,8 +95,7 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
       NotificationType.info: Icons.info,
     };
 
-    // Use provided values or fallback to defaults
-    final Color effectiveBackgroundColor = widget.backgroundColor ?? defaultTypeColors[widget.type]!.withOpacity(0.1);
+    final Color effectiveBackgroundColor = widget.backgroundColor ?? defaultTypeColors[widget.type]!.withValues(alpha: 0.1);
     final Color effectiveBorderColor = widget.borderColor ?? defaultTypeColors[widget.type]!;
     final Color effectiveIconColor = widget.iconColor ?? defaultTypeColors[widget.type]!;
     final double effectiveWidth = widget.width ?? 350.0;
@@ -119,22 +117,23 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
           ),
         ),
         width: effectiveWidth,
-        // Adjusted height dynamically.
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              style: ListTileStyle.drawer,
               title: widget.title,
               subtitle: widget.subTitle,
               contentPadding: EdgeInsets.symmetric(horizontal: effectivePaddingHorizontal),
               leading: Icon(typeIcons[widget.type], size: 24.0, color: effectiveIconColor),
-              trailing: IconButton(icon: const Icon(Icons.close, size: 18.0), onPressed: widget.onClose),
+              trailing: IconButton(
+                icon: const Icon(Icons.close, size: 18.0),
+                onPressed: widget.onClose,
+              ),
             ),
             LinearProgressIndicator(
               color: effectiveBorderColor,
-              value: _sliderValue,
+              value: _progressValue,
             ),
           ],
         ),

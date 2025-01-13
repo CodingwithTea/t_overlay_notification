@@ -3,3 +3,5 @@
 enum NotificationType { success, error, warning, info }
 
 enum NotificationPosition { topRight, topLeft, bottomRight, bottomLeft }
+
+enum SlideDirection { leftToRight, rightToLeft, topToBottom, bottomToTop }

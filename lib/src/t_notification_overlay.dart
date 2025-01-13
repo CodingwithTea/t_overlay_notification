@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../t_overlay_notification.dart';
+import 'animation_position_widget.dart';
 
 /// A utility class for managing overlay notifications in Flutter.
 /// This class allows creating styled notifications (success, error, warning, info)
@@ -34,6 +35,8 @@ class TNotificationOverlay {
     Color? iconColor,
     double? paddingVertical,
     double? paddingHorizontal,
+    SlideDirection? slideInDirection,
+    SlideDirection? slideOutDirection,
     NotificationPosition position = NotificationPosition.topRight,
   }) {
     // Obtain the current overlay from the context.
@@ -42,38 +45,33 @@ class TNotificationOverlay {
     // Declare the OverlayEntry to handle the current notification.
     late final OverlayEntry overlayEntry;
 
+    // Add a global key to control the position animation.
+    final GlobalKey<NotificationAnimationPositionState> key = GlobalKey<NotificationAnimationPositionState>();
+
     overlayEntry = OverlayEntry(
       builder: (context) {
         // Determine the alignment based on user-specified position.
-        Alignment alignment;
-        switch (position) {
-          case NotificationPosition.topLeft:
-            alignment = Alignment.topLeft;
-            break;
-          case NotificationPosition.topRight:
-            alignment = Alignment.topRight;
-            break;
-          case NotificationPosition.bottomLeft:
-            alignment = Alignment.bottomLeft;
-            break;
-          case NotificationPosition.bottomRight:
-            alignment = Alignment.bottomRight;
-            break;
-        }
+        final bool isTop = position == NotificationPosition.topLeft || position == NotificationPosition.topRight;
+        final bool isLeft = position == NotificationPosition.topLeft || position == NotificationPosition.bottomLeft;
 
-        final offset = (_notifications.indexOf(overlayEntry) * (height + spacing));
-
-        return Align(
-          alignment: alignment,
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: (position == NotificationPosition.topLeft || position == NotificationPosition.topRight) ? offset : 0,
-              bottom: (position == NotificationPosition.bottomLeft || position == NotificationPosition.bottomRight) ? offset : 0,
-            ),
+        return AnimatedPositioned(
+          duration: Duration(milliseconds: 300),
+          left: isLeft ? 16.0 : null,
+          right: isLeft ? null : 16.0,
+          top: isTop ? _calculateOffset(overlayEntry, height, spacing, isTop: true) : null,
+          bottom: isTop ? null : _calculateOffset(overlayEntry, height, spacing, isTop: false),
+          child: NotificationAnimationPosition(
+            key: key,
+            slideInDirection: slideInDirection,
+            slideOutDirection: slideOutDirection,
             child: TNotificationWidget(
               title: title,
               subTitle: subTitle,
-              onClose: () => _removeNotification(overlayEntry),
+              onClose: () {
+                key.currentState?.animateOut(() {
+                  _removeNotification(overlayEntry);
+                });
+              },
               type: type,
               width: width,
               paddingHorizontal: paddingHorizontal,
@@ -96,7 +94,13 @@ class TNotificationOverlay {
     overlay?.insert(overlayEntry);
 
     // Automatically remove the notification after the specified duration.
-    Future.delayed(duration, () => _removeNotification(overlayEntry));
+    Future.delayed(duration, () => key.currentState?.animateOut(() => _removeNotification(overlayEntry)));
+  }
+
+  static double _calculateOffset(OverlayEntry entry, double height, double spacing, {required bool isTop}) {
+    final index = _notifications.indexOf(entry);
+    final totalOffset = index * (height + spacing);
+    return totalOffset + (isTop ? height : 0.0); // Add margin for padding.
   }
 
   /// Removes a notification from the overlay and updates the positions of the remaining notifications.
