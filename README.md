@@ -18,7 +18,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  t_overlay_notification: ^0.0.4
+  t_overlay_notification: ^0.0.7
 ```
 
 ### Step 2: Import the Package

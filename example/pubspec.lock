@@ -177,13 +177,12 @@ packages:
     source: hosted
     version: "1.3.0"
   t_overlay_notification:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
-      name: t_overlay_notification
-      sha256: "5f32e7314d54c56e4d1728839d45b6971507affbbd5bf633ef5dca4f5d2a108f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.6"
+      path: "E:\\06 - Packages\\02 - Notification Popup\\t_overlay_notification"
+      relative: false
+    source: path
+    version: "0.0.7"
   term_glyph:
     dependency: transitive
     description:

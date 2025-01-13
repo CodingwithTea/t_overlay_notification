@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.7
+- Background Color Modifications
+
 ## 0.0.6
 - Added new helper function for ease **TNotificationOverlay.success**, **error**, **warning**, and **info**
 

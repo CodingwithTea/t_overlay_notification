@@ -10,12 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  t_overlay_notification: ^0.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  t_overlay_notification:
+    path: E:\06 - Packages\02 - Notification Popup\t_overlay_notification
 
 
 # The following section is specific to Flutter packages.
