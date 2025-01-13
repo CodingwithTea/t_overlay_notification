@@ -18,25 +18,22 @@ class MyApp extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  TNotificationOverlay.show(
-                    context: context,
-                    title: Text('Success Notification'),
-                    subTitle: Text(
-                        'This is a success notification. \n Expanding to line two.'),
-                    type: NotificationType.success,
-                  );
+                  TNotificationOverlay.success(
+                      context: context,
+                      title: Text('Success Notification'),
+                      subTitle: Text(
+                          'This is a success notification. \n Expanding to line two.'));
                 },
                 child: Text('Success Notification'),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  TNotificationOverlay.show(
+                  TNotificationOverlay.warning(
                     context: context,
                     title: Text('Warning Notification'),
                     subTitle: Text(
                         'This is a Warning notification. \n Expanding to line two.'),
-                    type: NotificationType.warning,
                   );
                 },
                 child: Text('Warning Notification'),
@@ -44,24 +41,23 @@ class MyApp extends StatelessWidget {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  TNotificationOverlay.show(
+                  TNotificationOverlay.error(
                     context: context,
                     title: Text('Error Notification'),
                     subTitle: Text(
                         'This is a Error notification. \n Expanding to line two.'),
-                    type: NotificationType.error,
                   );
                 },
                 child: Text('Error Notification'),
               ),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  TNotificationOverlay.show(
+                  TNotificationOverlay.info(
                     context: context,
                     title: Text('Info Notification'),
                     subTitle: Text(
                         'This is a Info notification. \n Expanding to line two.'),
-                    type: NotificationType.info,
                   );
                 },
                 child: Text('Info Notification'),

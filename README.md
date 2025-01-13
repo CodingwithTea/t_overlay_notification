@@ -1,4 +1,4 @@
-# TOverlayNotification
+## TOverlayNotification
 
 A reusable Flutter notification overlay widget for displaying success, error, warning, and info messages. This package allows you to show customizable notifications that automatically dismiss after a specified duration and can stack multiple notifications.
 
@@ -42,12 +42,17 @@ TNotificationOverlay.show(
 
 ```
 
-### Notification Types
+### Function Types
+- **TNotificationOverlay.success**: Green color notification for success messages.
+- **TNotificationOverlay.error**: Red color notification for error messages.
+- **TNotificationOverlay.warning**: Yellow color notification for warning messages.
+- **TNotificationOverlay.info**: Blue color notification for informational messages.
 
-    NotificationType.success: Green color notification for success messages.
-    NotificationType.error: Red color notification for error messages.
-    NotificationType.warning: Yellow color notification for warning messages.
-    NotificationType.info: Blue color notification for informational messages.
+### Notification Types
+- NotificationType.success: Green color notification for success messages.
+- NotificationType.error: Red color notification for error messages.
+- NotificationType.warning: Yellow color notification for warning messages.
+- NotificationType.info: Blue color notification for informational messages.
 
 Customization
 
@@ -64,9 +69,9 @@ TNotificationOverlay.show(
 ```
 
 
-# Example Usage
+## Example Usage
 
-## Basic Notification
+### Basic Notification
 
 To show a simple notification with a title, subtitle, and custom type, use the `TNotificationOverlay.show()` method:
 
@@ -108,7 +113,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-## Notification with Slide and Fade Animations
+### Notification with Slide and Fade Animations
 
 You can customize the slide-in and fade-out animations for your notifications:
 
@@ -153,7 +158,7 @@ class MyApp extends StatelessWidget {
 
 ```
 
-## Custom Notification Design
+### Custom Notification Design
 
 Customize the appearance of the notification with various color options:
 
@@ -180,7 +185,7 @@ TNotificationOverlay.show(
 
 ```
 
-## API Reference
+### API Reference
 
 - show(): Displays the notification with the provided parameters.
 - context: The BuildContext of the widget.
@@ -198,7 +203,7 @@ TNotificationOverlay.show(
 - borderRadius: Customize the border radius of the notification.
 - onClose: Callback for handling notification close action.
 
-## Notes
+### Notes
 
 - You can customize the animation duration and slide direction according to your needs.
 - The slideInDirection and slideOutDirection can be set to any of the following:

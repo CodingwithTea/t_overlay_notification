@@ -142,20 +142,27 @@ class TNotificationOverlay {
     late final OverlayEntry overlayEntry;
 
     // Add a global key to control the position animation.
-    final GlobalKey<NotificationAnimationPositionState> key = GlobalKey<NotificationAnimationPositionState>();
+    final GlobalKey<NotificationAnimationPositionState> key =
+        GlobalKey<NotificationAnimationPositionState>();
 
     overlayEntry = OverlayEntry(
       builder: (context) {
         // Determine the alignment based on user-specified position.
-        final bool isTop = position == NotificationPosition.topLeft || position == NotificationPosition.topRight;
-        final bool isLeft = position == NotificationPosition.topLeft || position == NotificationPosition.bottomLeft;
+        final bool isTop = position == NotificationPosition.topLeft ||
+            position == NotificationPosition.topRight;
+        final bool isLeft = position == NotificationPosition.topLeft ||
+            position == NotificationPosition.bottomLeft;
 
         return AnimatedPositioned(
           duration: Duration(milliseconds: 300),
           left: isLeft ? 16.0 : null,
           right: isLeft ? null : 16.0,
-          top: isTop ? _calculateOffset(overlayEntry, height, spacing, isTop: true) : null,
-          bottom: isTop ? null : _calculateOffset(overlayEntry, height, spacing, isTop: false),
+          top: isTop
+              ? _calculateOffset(overlayEntry, height, spacing, isTop: true)
+              : null,
+          bottom: isTop
+              ? null
+              : _calculateOffset(overlayEntry, height, spacing, isTop: false),
           child: NotificationAnimationPosition(
             key: key,
             slideInDirection: slideInDirection,
@@ -190,10 +197,15 @@ class TNotificationOverlay {
     overlay?.insert(overlayEntry);
 
     // Automatically remove the notification after the specified duration.
-    Future.delayed(duration, () => key.currentState?.animateOut(() => _removeNotification(overlayEntry)));
+    Future.delayed(
+        duration,
+        () => key.currentState
+            ?.animateOut(() => _removeNotification(overlayEntry)));
   }
 
-  static double _calculateOffset(OverlayEntry entry, double height, double spacing, {required bool isTop}) {
+  static double _calculateOffset(
+      OverlayEntry entry, double height, double spacing,
+      {required bool isTop}) {
     final index = _notifications.indexOf(entry);
     final totalOffset = index * (height + spacing);
     return totalOffset + (isTop ? height : 0.0); // Add margin for padding.
