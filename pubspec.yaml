@@ -2,7 +2,7 @@ name: t_overlay_notification
 description: A reusable Flutter notification overlay for success, error, warning, and info messages.
 
 
-version: 0.0.4
+version: 0.0.5
 
 # Follow the semantic versioning guidelines:
 #

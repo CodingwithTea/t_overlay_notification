@@ -95,9 +95,12 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
       NotificationType.info: Icons.info,
     };
 
-    final Color effectiveBackgroundColor = widget.backgroundColor ?? defaultTypeColors[widget.type]!.withValues(alpha: 0.1);
-    final Color effectiveBorderColor = widget.borderColor ?? defaultTypeColors[widget.type]!;
-    final Color effectiveIconColor = widget.iconColor ?? defaultTypeColors[widget.type]!;
+    final Color effectiveBackgroundColor = widget.backgroundColor ??
+        defaultTypeColors[widget.type]!.withValues(alpha: 0.1);
+    final Color effectiveBorderColor =
+        widget.borderColor ?? defaultTypeColors[widget.type]!;
+    final Color effectiveIconColor =
+        widget.iconColor ?? defaultTypeColors[widget.type]!;
     final double effectiveWidth = widget.width ?? 350.0;
     final double effectiveBorderRadius = widget.borderRadius ?? 8.0;
     final double effectivePaddingVertical = widget.paddingVertical ?? 8.0;
@@ -110,7 +113,8 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
         padding: EdgeInsets.only(top: effectivePaddingVertical),
         decoration: BoxDecoration(
           color: effectiveBackgroundColor,
-          border: Border(left: BorderSide(color: effectiveBorderColor, width: 2)),
+          border:
+              Border(left: BorderSide(color: effectiveBorderColor, width: 2)),
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(effectiveBorderRadius),
             bottomRight: Radius.circular(effectiveBorderRadius),
@@ -124,8 +128,10 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
             ListTile(
               title: widget.title,
               subtitle: widget.subTitle,
-              contentPadding: EdgeInsets.symmetric(horizontal: effectivePaddingHorizontal),
-              leading: Icon(typeIcons[widget.type], size: 24.0, color: effectiveIconColor),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: effectivePaddingHorizontal),
+              leading: Icon(typeIcons[widget.type],
+                  size: 24.0, color: effectiveIconColor),
               trailing: IconButton(
                 icon: const Icon(Icons.close, size: 18.0),
                 onPressed: widget.onClose,

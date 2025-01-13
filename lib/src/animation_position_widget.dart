@@ -10,15 +10,18 @@ class NotificationAnimationPosition extends StatefulWidget {
   const NotificationAnimationPosition({
     super.key,
     required this.child,
-    this.slideInDirection = SlideDirection.leftToRight,
-    this.slideOutDirection = SlideDirection.leftToRight,
+    this.slideInDirection,
+    this.slideOutDirection,
   });
 
   @override
-  State<NotificationAnimationPosition> createState() => NotificationAnimationPositionState();
+  State<NotificationAnimationPosition> createState() =>
+      NotificationAnimationPositionState();
 }
 
-class NotificationAnimationPositionState extends State<NotificationAnimationPosition> with SingleTickerProviderStateMixin {
+class NotificationAnimationPositionState
+    extends State<NotificationAnimationPosition>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
@@ -33,11 +36,13 @@ class NotificationAnimationPositionState extends State<NotificationAnimationPosi
 
     // Configure slide and fade animations
     _slideAnimation = Tween<Offset>(
-      begin: _getSlideOffset(widget.slideInDirection!),
+      begin: _getSlideOffset(
+          widget.slideInDirection ?? SlideDirection.rightToLeft),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
   }
@@ -58,10 +63,12 @@ class NotificationAnimationPositionState extends State<NotificationAnimationPosi
   void animateOut(VoidCallback onComplete) {
     _slideAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: _getSlideOffset(widget.slideOutDirection!),
+      end: _getSlideOffset(
+          widget.slideOutDirection ?? SlideDirection.rightToLeft),
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
-    _fadeAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+    _fadeAnimation = Tween<double>(begin: 1.0, end: 0.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
     _controller.reverse().whenComplete(onComplete);
   }

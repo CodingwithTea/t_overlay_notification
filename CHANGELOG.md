@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.5
+- Example Added.
+
 ## 0.0.4
 - Introduced New **Animations**: Added support for **slide-in** **slide-out** and **fade-out** animations for more engaging notifications.
 - Fixed Dynamic **Height Calculation**: Improved notification stacking by dynamically calculating the height of each notification, ensuring consistent spacing between them.
