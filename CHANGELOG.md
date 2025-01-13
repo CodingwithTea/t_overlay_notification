@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0
+- **Sticky Notifications**: Introduced a new `sticky` property. When set to `true`, the notification becomes sticky and does not dismiss automatically after a timer.
+- **Updated Design**: Notifications now feature a minimal and modern color palette for a more polished look.
+- **Action Widget Support**: Added an `action` parameter as a widget, allowing for customizable actions. Simplified usage with **title** and **subtitle** as strings, where **subtitle** is optional.
+- Fixed animation glitches when transitioning notifications in and out
+
 ## 0.0.7
 - Background Color Modifications
 

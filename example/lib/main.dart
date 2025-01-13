@@ -21,9 +21,8 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     TNotificationOverlay.success(
                       context: context,
-                      title: Text('Success Notification'),
-                      subTitle: Text(
-                          'This is a success notification. \n Expanding to line two.'),
+                      title: 'Success Notification',
+                      subTitle: 'This is a success notification. \n Expanding to line two.',
                     );
                   },
                   child: Text('Success Notification'),
@@ -33,9 +32,8 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     TNotificationOverlay.warning(
                       context: context,
-                      title: Text('Warning Notification'),
-                      subTitle: Text(
-                          'This is a Warning notification. \n Expanding to line two.'),
+                      title: ('Warning Notification'),
+                      subTitle: ('This is a Warning notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Warning Notification'),
@@ -45,9 +43,8 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     TNotificationOverlay.error(
                       context: context,
-                      title: Text('Error Notification'),
-                      subTitle: Text(
-                          'This is a Error notification. \n Expanding to line two.'),
+                      title: ('Error Notification'),
+                      subTitle: ('This is a Error notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Error Notification'),
@@ -57,9 +54,8 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     TNotificationOverlay.info(
                       context: context,
-                      title: Text('Info Notification'),
-                      subTitle: Text(
-                          'This is a Info notification. \n Expanding to line two.'),
+                      title: ('Info Notification'),
+                      subTitle: ('This is a Info notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Info Notification'),
@@ -67,11 +63,22 @@ class MyApp extends StatelessWidget {
                 const SizedBox(height: 30),
                 ElevatedButton(
                   onPressed: () {
+                    TNotificationOverlay.info(
+                      sticky: true,
+                      context: context,
+                      title: ('Info Notification'),
+                    );
+                  },
+                  child: Text('Info Single Line Notification'),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
                     TNotificationOverlay.show(
                       context: context,
-                      title: Text('Bottom Left Notification'),
-                      subTitle: Text('This is a Bottom Left notification.'),
-                      type: NotificationType.warning,
+                      title: ('Bottom Left Notification'),
+                      subTitle: ('This is a Bottom Left notification.'),
+                      type: NotificationType.info,
                       position: NotificationPosition.bottomLeft,
                       slideInDirection: SlideDirection.leftToRight,
                       slideOutDirection: SlideDirection.leftToRight,
@@ -84,9 +91,9 @@ class MyApp extends StatelessWidget {
                   onPressed: () {
                     TNotificationOverlay.show(
                       context: context,
-                      title: Text('Bottom Right Notification'),
-                      subTitle: Text('This is a Bottom Right notification.'),
-                      type: NotificationType.warning,
+                      title: ('Bottom Right Notification'),
+                      subTitle: ('This is a Bottom Right notification.'),
+                      type: NotificationType.info,
                       position: NotificationPosition.bottomRight,
                       slideInDirection: SlideDirection.rightToLeft,
                       slideOutDirection: SlideDirection.rightToLeft,
@@ -101,24 +108,16 @@ class MyApp extends StatelessWidget {
                       context: context,
                       width: 350,
                       spacing: 30,
-                      title: Text('Warning Notification',
-                          style: Theme.of(context).textTheme.titleLarge),
-                      subTitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      title: 'Custom Notification',
+                      subTitle: 'This is a custom notification',
+                      action: Row(
                         children: [
-                          Text('This is a warning notification.'),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              TextButton(
-                                  onPressed: () {}, child: Text('Dismiss')),
-                              const SizedBox(width: 8),
-                              TextButton(onPressed: () {}, child: Text('Undo'))
-                            ],
-                          )
+                          TextButton(onPressed: () {}, child: Text('Dismiss', style: TextStyle(color: Colors.white),)),
+                          const SizedBox(width: 8),
+                          TextButton(onPressed: () {}, child: Text('Undo', style: TextStyle(color: Colors.white)))
                         ],
                       ),
-                      type: NotificationType.warning,
+                      type: NotificationType.info,
                       duration: Duration(seconds: 3),
                       position: NotificationPosition.bottomLeft,
                       slideInDirection: SlideDirection.leftToRight,

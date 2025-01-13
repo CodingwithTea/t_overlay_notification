@@ -18,7 +18,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  t_overlay_notification: ^0.0.7
+  t_overlay_notification: ^1.0.0
 ```
 
 ### Step 2: Import the Package
@@ -94,8 +94,8 @@ class MyApp extends StatelessWidget {
             onPressed: () {
               TNotificationOverlay.show(
                 context: context,
-                title: Text('Success Notification'),
-                subTitle: Text('This is a success notification.'),
+                title: 'Success Notification',
+                subTitle: 'This is a success notification.',
                 type: NotificationType.success,
                 duration: Duration(seconds: 3),
                 height: 80, // Adjust the height of the notification
@@ -136,8 +136,8 @@ class MyApp extends StatelessWidget {
             onPressed: () {
               TNotificationOverlay.show(
                 context: context,
-                title: Text('Warning Notification'),
-                subTitle: Text('This is a warning notification.'),
+                title: 'Warning Notification',
+                subTitle: 'This is a warning notification.',
                 type: NotificationType.warning,
                 duration: Duration(seconds: 3),
                 slideInDirection: SlideDirection.left, // Slide from left
@@ -165,22 +165,31 @@ Customize the appearance of the notification with various color options:
 ```dart
 TNotificationOverlay.show(
   context: context,
-  title: Text('Custom Notification'),
-  subTitle: Text('This is a custom-styled notification.'),
-  type: NotificationType.info,
-  backgroundColor: Colors.blueAccent,
-  borderColor: Colors.blue,
-  titleColor: Colors.white,
-  messageColor: Colors.white70,
-  iconColor: Colors.white,
-  borderRadius: 10.0,
-  paddingVertical: 16.0,
-  paddingHorizontal: 20.0,
-  duration: Duration(seconds: 5),
-  height: 100,
-  width: 300,
-  spacing: 12,
-  position: NotificationPosition.topLeft,
+  title: 'Custom Notification', // Required title
+  subTitle: 'This is a custom-styled notification.', // Optional subtitle
+  action: TextButton( // Example action widget
+    onPressed: () {
+      print('Action clicked');
+    },
+    child: Text('UNDO', style: TextStyle(color: Colors.white)),
+  ),
+  type: NotificationType.info, // Notification type
+  backgroundColor: Colors.blueAccent, // Background color
+  borderColor: Colors.blue, // Border color
+  titleColor: Colors.white, // Title text color
+  messageColor: Colors.white70, // Subtitle text color
+  iconColor: Colors.white, // Icon color
+  borderRadius: 10.0, // Rounded corners
+  paddingVertical: 16.0, // Vertical padding
+  paddingHorizontal: 20.0, // Horizontal padding
+  duration: Duration(seconds: 5), // Notification duration
+  sticky: false, // Set to true for sticky notifications
+  height: 100, // Notification height
+  width: 300, // Notification width
+  spacing: 12, // Spacing between notifications
+  position: NotificationPosition.topLeft, // Position on the screen
+  slideInDirection: SlideDirection.leftToRight, // Slide-in animation direction
+  slideOutDirection: SlideDirection.rightToLeft, // Slide-out animation direction
 );
 
 ```
