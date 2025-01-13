@@ -22,7 +22,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.success(
                       context: context,
                       title: 'Success Notification',
-                      subTitle: 'This is a success notification. \n Expanding to line two.',
+                      subTitle:
+                          'This is a success notification. \n Expanding to line two.',
                     );
                   },
                   child: Text('Success Notification'),
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.warning(
                       context: context,
                       title: ('Warning Notification'),
-                      subTitle: ('This is a Warning notification. \n Expanding to line two.'),
+                      subTitle:
+                          ('This is a Warning notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Warning Notification'),
@@ -44,7 +46,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.error(
                       context: context,
                       title: ('Error Notification'),
-                      subTitle: ('This is a Error notification. \n Expanding to line two.'),
+                      subTitle:
+                          ('This is a Error notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Error Notification'),
@@ -55,7 +58,8 @@ class MyApp extends StatelessWidget {
                     TNotificationOverlay.info(
                       context: context,
                       title: ('Info Notification'),
-                      subTitle: ('This is a Info notification. \n Expanding to line two.'),
+                      subTitle:
+                          ('This is a Info notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Info Notification'),
@@ -112,9 +116,17 @@ class MyApp extends StatelessWidget {
                       subTitle: 'This is a custom notification',
                       action: Row(
                         children: [
-                          TextButton(onPressed: () {}, child: Text('Dismiss', style: TextStyle(color: Colors.white),)),
+                          TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Dismiss',
+                                style: TextStyle(color: Colors.white),
+                              )),
                           const SizedBox(width: 8),
-                          TextButton(onPressed: () {}, child: Text('Undo', style: TextStyle(color: Colors.white)))
+                          TextButton(
+                              onPressed: () {},
+                              child: Text('Undo',
+                                  style: TextStyle(color: Colors.white)))
                         ],
                       ),
                       type: NotificationType.info,

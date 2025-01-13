@@ -100,8 +100,10 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
       NotificationType.info: Iconsax.info_circle,
     };
 
-    final Color effectiveBackgroundColor = widget.backgroundColor ?? defaultTypeColors[widget.type]!;
-    final Color effectiveBorderColor = widget.borderColor ?? defaultTypeColors[widget.type]!;
+    final Color effectiveBackgroundColor =
+        widget.backgroundColor ?? defaultTypeColors[widget.type]!;
+    final Color effectiveBorderColor =
+        widget.borderColor ?? defaultTypeColors[widget.type]!;
     final Color effectiveIconColor = widget.iconColor ?? Colors.white;
     final double effectiveWidth = widget.width ?? 350.0;
     final double effectiveBorderRadius = widget.borderRadius ?? 16.0;
@@ -115,7 +117,8 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
         // padding: EdgeInsets.only(top: effectivePaddingVertical),
         decoration: BoxDecoration(
           color: effectiveBackgroundColor,
-          border: Border(left: BorderSide(color: effectiveBorderColor, width: 1)),
+          border:
+              Border(left: BorderSide(color: effectiveBorderColor, width: 1)),
           borderRadius: BorderRadius.circular(effectiveBorderRadius),
         ),
         width: effectiveWidth,
@@ -125,21 +128,35 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
           children: [
             /// Value
             ListTile(
-              title: Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white)),
+              title: Text(widget.title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white)),
               subtitle: widget.action != null
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (widget.subTitle != null)
-                          Text(widget.subTitle!, style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14, color: Colors.white)),
+                          Text(widget.subTitle!,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14,
+                                  color: Colors.white)),
                         widget.action!,
                       ],
                     )
                   : widget.subTitle != null
-                      ? Text(widget.subTitle!, style: TextStyle(fontWeight: FontWeight.normal, fontSize: 14, color: Colors.white))
+                      ? Text(widget.subTitle!,
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14,
+                              color: Colors.white))
                       : null,
-              contentPadding: EdgeInsets.symmetric(horizontal: effectivePaddingHorizontal),
-              leading: Icon(typeIcons[widget.type], size: 24.0, color: effectiveIconColor),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: effectivePaddingHorizontal),
+              leading: Icon(typeIcons[widget.type],
+                  size: 24.0, color: effectiveIconColor),
               trailing: IconButton(
                 icon: const Icon(Icons.close, size: 18.0, color: Colors.white),
                 onPressed: widget.onClose,
@@ -147,7 +164,10 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
             ),
 
             /// Progress Indicator
-            LinearProgressIndicator(minHeight: 1, value: _progressValue, color: effectiveBorderColor),
+            LinearProgressIndicator(
+                minHeight: 1,
+                value: _progressValue,
+                color: effectiveBorderColor),
           ],
         ),
       ),
