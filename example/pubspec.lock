@@ -180,10 +180,10 @@ packages:
     dependency: "direct main"
     description:
       name: t_overlay_notification
-      sha256: "8d8ef4a5ed74e972b442946a9fbb06501dd8445fde3dbfc6d85167592f089773"
+      sha256: "5f32e7314d54c56e4d1728839d45b6971507affbbd5bf633ef5dca4f5d2a108f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.4"
+    version: "0.0.6"
   term_glyph:
     dependency: transitive
     description:

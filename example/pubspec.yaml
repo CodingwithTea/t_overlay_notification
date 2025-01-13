@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  t_overlay_notification: ^0.0.4
+  t_overlay_notification: ^0.0.6
 
 dev_dependencies:
   flutter_test:
