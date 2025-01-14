@@ -190,7 +190,7 @@ packages:
       path: "E:\\06 - Packages\\02 - Notification Popup\\t_overlay_notification"
       relative: false
     source: path
-    version: "0.0.7"
+    version: "1.1.0"
   term_glyph:
     dependency: transitive
     description:
