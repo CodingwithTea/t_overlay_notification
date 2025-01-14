@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+- **Logic Update**: Hide the liner progress indicator when its `sticky` property set to `true`.
+- **Design Update**: Colors are now more appealing and progress colors modified.
+
 ## 1.0.0
 - **Sticky Notifications**: Introduced a new `sticky` property. When set to `true`, the notification becomes sticky and does not dismiss automatically after a timer.
 - **Updated Design**: Notifications now feature a minimal and modern color palette for a more polished look.

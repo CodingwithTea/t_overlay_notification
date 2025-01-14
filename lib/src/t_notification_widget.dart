@@ -87,10 +87,10 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
   @override
   Widget build(BuildContext context) {
     final Map<NotificationType, Color> defaultTypeColors = {
-      NotificationType.success: const Color(0xFF8FB9A8),
+      NotificationType.success: const Color(0xFF30A175),
       NotificationType.error: const Color(0xFFD8737F),
-      NotificationType.warning: const Color(0xFFFCBB6D),
-      NotificationType.info: const Color(0xFF475C7A),
+      NotificationType.warning: const Color(0xFFFFAD4B),
+      NotificationType.info: const Color(0xFF45505E),
     };
 
     final Map<NotificationType, IconData> typeIcons = {
@@ -129,20 +129,24 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
             /// Value
             ListTile(
               title: Text(widget.title,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.white)),
+                  style: widget.subTitle == null
+                      ? TextStyle(fontSize: 14, color: Colors.white)
+                      : TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white)),
               subtitle: widget.action != null
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (widget.subTitle != null)
-                          Text(widget.subTitle!,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 14,
-                                  color: Colors.white)),
+                          Text(
+                            widget.subTitle!,
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                fontSize: 14,
+                                color: Colors.white),
+                          ),
                         widget.action!,
                       ],
                     )
@@ -164,10 +168,12 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
             ),
 
             /// Progress Indicator
-            LinearProgressIndicator(
-                minHeight: 1,
-                value: _progressValue,
-                color: effectiveBorderColor),
+            if (widget.sticky == null || !widget.sticky!)
+              LinearProgressIndicator(
+                  minHeight: 1,
+                  value: _progressValue,
+                  color: Colors.white,
+                  backgroundColor: effectiveBorderColor),
           ],
         ),
       ),
