@@ -68,12 +68,51 @@ class MyApp extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     TNotificationOverlay.info(
-                      sticky: true,
                       context: context,
                       title: ('Info Notification'),
                     );
                   },
                   child: Text('Info Single Line Notification'),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    TNotificationOverlay.show(
+                      sticky: true,
+                      context: context,
+                      title: ('Sticky Notification'),
+                      subTitle: 'This is a sticky notification with action Widget',
+                      position: NotificationPosition.topLeft,
+                      slideInDirection: SlideDirection.topToBottom,
+                      slideOutDirection: SlideDirection.bottomToTop,
+                      action: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Choose any options below', style: TextStyle(color: Colors.white)),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Dismiss',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                              const SizedBox(width: 8),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: Text('Undo',
+                                      style: TextStyle(color: Colors.white)))
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Text('Close this notification manually.', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                          const SizedBox(height: 12),
+                        ],
+                      )
+                    );
+                  },
+                  child: Text('Sticky Notification'),
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
