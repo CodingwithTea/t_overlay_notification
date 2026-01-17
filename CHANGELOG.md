@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.2
+- **New Design System:** Completely redesigned the notification widget with a modern, "Glass/Chip" style aesthetic. Includes a dark-neutral background with color-coded icons and progress bars.
+- **Responsive Positioning:** Added smart responsive logic.
+    - **Mobile:** Defaults to `bottomCenter` (floating above the navigation bar).
+    - **Web/Desktop:** Defaults to `topRight` or `bottomCenter` based on layout.
+    - **New Positions:** Added support for `topCenter` and `bottomCenter`.
+- **UX Improvements:** Reduced default display duration from 5s to 4s for a snappier feel.
+- **Responsive Width:** Notifications now calculate width dynamically (`MediaQuery` on mobile, fixed width on Web).
+- **Dependencies:** Updated internal package dependencies to latest versions.
+- **Example App:** Added "Default Notification" demo to showcase the new responsive positioning logic.
+
 ## 1.1.1
 - Packages Updated
 

@@ -16,7 +16,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
   t_overlay_notification:
-    path: E:\06 - Packages\02 - Notification Popup\t_overlay_notification
+    path: ../
 
 
 # The following section is specific to Flutter packages.

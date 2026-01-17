@@ -13,6 +13,7 @@ class TNotificationWidget extends StatefulWidget {
   final VoidCallback onClose;
   final bool? sticky;
 
+  // -- Customization params (Keeping all original values) --
   final Color? backgroundColor;
   final Color? borderColor;
   final Color? titleColor;
@@ -49,7 +50,7 @@ class TNotificationWidget extends StatefulWidget {
 }
 
 class _TNotificationWidgetState extends State<TNotificationWidget> {
-  late double _progressValue; // Initialize slider value dynamically.
+  late double _progressValue;
   Timer? _timer;
 
   @override
@@ -61,18 +62,18 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
 
   void _startSliderCountdown() {
     final int totalDuration = widget.duration.inMilliseconds;
-    const int updateInterval = 50; // 50 ms update interval.
+    const int updateInterval = 50;
     final double decrementStep = updateInterval / totalDuration;
 
-    _timer = Timer.periodic(Duration(milliseconds: updateInterval), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: updateInterval), (timer) {
       if (!mounted) return;
 
       setState(() {
         _progressValue -= decrementStep;
         if (_progressValue <= 0) {
-          _progressValue = 0; // Ensure the value is exactly 0.
-          _timer?.cancel(); // Stop the timer.
-          widget.onClose(); // Trigger the close callback.
+          _progressValue = 0;
+          _timer?.cancel();
+          widget.onClose();
         }
       });
     });
@@ -80,17 +81,20 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancel the timer when the widget is disposed.
+    _timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final Map<NotificationType, Color> defaultTypeColors = {
-      NotificationType.success: const Color(0xFF30A175),
-      NotificationType.error: const Color(0xFFD8737F),
-      NotificationType.warning: const Color(0xFFFFAD4B),
-      NotificationType.info: const Color(0xFF45505E),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // -- 1. Define Type Colors (Green, Red, etc.) --
+    final Map<NotificationType, Color> typeColors = {
+      NotificationType.success: const Color(0xFF30A175), // Green
+      NotificationType.error: const Color(0xFFD8737F), // Red
+      NotificationType.warning: const Color(0xFFFFAD4B), // Amber
+      NotificationType.info: const Color(0xFF45505E), // Blue/Grey
     };
 
     final Map<NotificationType, IconData> typeIcons = {
@@ -100,81 +104,132 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
       NotificationType.info: Iconsax.info_circle,
     };
 
+    // -- 2. Resolve Effective Values --
+    // Logic: If user provides a color, use it. Otherwise, use the "Modern Dark Chip" defaults.
+
+    final Color effectiveTypeColor = typeColors[widget.type]!;
+
+    // Default BG: Dark Grey (Modern Look) OR User provided
     final Color effectiveBackgroundColor =
-        widget.backgroundColor ?? defaultTypeColors[widget.type]!;
-    final Color effectiveBorderColor =
-        widget.borderColor ?? defaultTypeColors[widget.type]!;
-    final Color effectiveIconColor = widget.iconColor ?? Colors.white;
+        widget.backgroundColor ?? (isDark ? const Color(0xFF1E1E1E) : const Color(0xFF2C2C2C));
+
+    // Default Border: None (cleaner) OR User provided
+    final Color? effectiveBorderColor = widget.borderColor;
+
+    // Text Colors
+    final Color effectiveTitleColor = widget.titleColor ?? Colors.white;
+    final Color effectiveMessageColor = widget.messageColor ?? Colors.white70;
+
+    // Icon Color: Defaults to the Type Color (Green/Red) to make it pop against dark BG
+    final Color effectiveIconColor = widget.iconColor ?? effectiveTypeColor;
+
     final double effectiveWidth = widget.width ?? 350.0;
-    final double effectiveBorderRadius = widget.borderRadius ?? 16.0;
-    final double effectivePaddingVertical = widget.paddingVertical ?? 8.0;
-    final double effectivePaddingHorizontal = widget.paddingHorizontal ?? 12.0;
+    final double effectiveBorderRadius = widget.borderRadius ?? 20.0; // Increased default radius for Chip look
+    final double effectivePaddingV = widget.paddingVertical ?? 12.0;
+    final double effectivePaddingH = widget.paddingHorizontal ?? 16.0;
 
     return Material(
       color: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.all(effectivePaddingVertical),
-        // padding: EdgeInsets.only(top: effectivePaddingVertical),
+        width: effectiveWidth,
+        // -- Decoration --
         decoration: BoxDecoration(
           color: effectiveBackgroundColor,
-          border:
-              Border(left: BorderSide(color: effectiveBorderColor, width: 1)),
           borderRadius: BorderRadius.circular(effectiveBorderRadius),
-        ),
-        width: effectiveWidth,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            /// Value
-            ListTile(
-              title: Text(widget.title,
-                  style: widget.subTitle == null
-                      ? TextStyle(fontSize: 14, color: Colors.white)
-                      : TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white)),
-              subtitle: widget.action != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (widget.subTitle != null)
-                          Text(
-                            widget.subTitle!,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                                color: Colors.white),
-                          ),
-                        widget.action!,
-                      ],
-                    )
-                  : widget.subTitle != null
-                      ? Text(widget.subTitle!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
-                              color: Colors.white))
-                      : null,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: effectivePaddingHorizontal),
-              leading: Icon(typeIcons[widget.type],
-                  size: 24.0, color: effectiveIconColor),
-              trailing: IconButton(
-                icon: const Icon(Icons.close, size: 18.0, color: Colors.white),
-                onPressed: widget.onClose,
-              ),
-            ),
-
-            /// Progress Indicator
-            if (widget.sticky == null || !widget.sticky!)
-              LinearProgressIndicator(
-                  minHeight: 1,
-                  value: _progressValue,
-                  color: Colors.white,
-                  backgroundColor: effectiveBorderColor),
+          border:
+              effectiveBorderColor != null ? Border.all(color: effectiveBorderColor) : null, // Clean look by default
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.15),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
           ],
+        ),
+        // -- Clipping for Progress Bar --
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(effectiveBorderRadius),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // -- Content Row --
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: effectivePaddingH, vertical: effectivePaddingV),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Align to top for long text
+                  children: [
+                    // 1. Icon
+                    Icon(typeIcons[widget.type], color: effectiveIconColor, size: 24),
+                    const SizedBox(width: 12),
+
+                    // 2. Text & Action (Expanded)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Title
+                          Text(
+                            widget.title,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: effectiveTitleColor,
+                            ),
+                          ),
+
+                          // SubTitle (Optional)
+                          if (widget.subTitle != null) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              widget.subTitle!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                color: effectiveMessageColor,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+
+                          // Custom Action (Optional)
+                          if (widget.action != null) ...[
+                            const SizedBox(height: 8),
+                            widget.action!,
+                          ],
+                        ],
+                      ),
+                    ),
+
+                    // 3. Close Button
+                    const SizedBox(width: 8),
+                    InkWell(
+                      onTap: widget.onClose,
+                      borderRadius: BorderRadius.circular(100),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.close,
+                          size: 18,
+                          color: effectiveMessageColor.withValues(alpha: (0.6)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // -- Progress Indicator --
+              if (widget.sticky == null || !widget.sticky!)
+                LinearProgressIndicator(
+                  value: _progressValue,
+                  minHeight: 2, // Slimmer modern look
+                  backgroundColor: Colors.transparent,
+                  color: effectiveTypeColor, // Progress matches the success/error color
+                ),
+            ],
+          ),
         ),
       ),
     );

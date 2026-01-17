@@ -17,11 +17,11 @@ class TNotificationOverlay {
     String? subTitle,
     Widget? action,
     bool? sticky,
-    Duration duration = const Duration(seconds: 5),
+    Duration duration = const Duration(seconds: 4),
     double spacing = 10,
     double height = 100,
     double? width,
-    NotificationPosition position = NotificationPosition.topRight,
+    NotificationPosition? position,
   }) {
     show(
       context: context,
@@ -45,11 +45,11 @@ class TNotificationOverlay {
     String? subTitle,
     Widget? action,
     bool? sticky,
-    Duration duration = const Duration(seconds: 5),
+    Duration duration = const Duration(seconds: 4),
     double spacing = 10,
     double height = 100,
     double? width,
-    NotificationPosition position = NotificationPosition.topRight,
+    NotificationPosition? position,
   }) {
     show(
       context: context,
@@ -73,11 +73,11 @@ class TNotificationOverlay {
     String? subTitle,
     Widget? action,
     bool? sticky,
-    Duration duration = const Duration(seconds: 5),
+    Duration duration = const Duration(seconds: 4),
     double spacing = 10,
     double height = 100,
     double? width,
-    NotificationPosition position = NotificationPosition.topRight,
+    NotificationPosition? position,
   }) {
     show(
       context: context,
@@ -101,11 +101,11 @@ class TNotificationOverlay {
     String? subTitle,
     Widget? action,
     bool? sticky,
-    Duration duration = const Duration(seconds: 5),
+    Duration duration = const Duration(seconds: 4),
     double spacing = 10,
     double height = 100,
     double? width,
-    NotificationPosition position = NotificationPosition.topRight,
+    NotificationPosition? position,
   }) {
     show(
       context: context,
@@ -145,9 +145,9 @@ class TNotificationOverlay {
     String? subTitle,
     Widget? action,
     NotificationType type = NotificationType.info,
-    Duration duration = const Duration(seconds: 5),
+    Duration duration = const Duration(seconds: 4),
     bool? sticky,
-    double spacing = 10,
+    double spacing = 20,
     double height = 100,
     double? width,
     Color? titleColor,
@@ -160,30 +160,68 @@ class TNotificationOverlay {
     double? paddingHorizontal,
     SlideDirection? slideInDirection,
     SlideDirection? slideOutDirection,
-    NotificationPosition position = NotificationPosition.topRight,
+    NotificationPosition? position,
   }) {
     // Obtain the current overlay from the context.
     final overlay = Navigator.of(context).overlay;
+    if (overlay == null) return;
 
     // Declare the OverlayEntry to handle the current notification.
     late final OverlayEntry overlayEntry;
 
     // Add a global key to control the position animation.
-    final GlobalKey<NotificationAnimationPositionState> key = GlobalKey<NotificationAnimationPositionState>();
+    final GlobalKey<NotificationAnimationPositionState> key =
+        GlobalKey<NotificationAnimationPositionState>();
+
+    // -- RESPONSIVE CALCULATIONS --
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
+    // Mobile: 90% width, Web: Fixed 400px or user defined
+    final effectiveWidth = width ?? (isMobile ? screenWidth * 0.9 : 400.0);
+
+    // Spacing Calculations
+    const double itemSpacing = 10.0;
+    const double itemHeight = 80.0; // Approximate height for stacking logic
+
+    // Show center in mobile and top right in web
+    if (position == null) {
+      if (isMobile) {
+        position = NotificationPosition.bottomCenter;
+      } else {
+        position = NotificationPosition.topRight;
+      }
+    }
 
     // Create the notification entry.
     overlayEntry = OverlayEntry(
       builder: (context) {
+        final safePadding = MediaQuery.of(context).padding;
+
         // Determine the alignment based on user-specified position.
-        final bool isTop = position == NotificationPosition.topLeft || position == NotificationPosition.topRight;
-        final bool isLeft = position == NotificationPosition.topLeft || position == NotificationPosition.bottomLeft;
+        // final bool isTop = position == NotificationPosition.topLeft || position == NotificationPosition.topRight;
+        // final bool isLeft = position == NotificationPosition.topLeft || position == NotificationPosition.bottomLeft;
 
         return AnimatedPositioned(
           duration: Duration(milliseconds: 300),
-          left: isLeft ? 16.0 : null,
-          right: isLeft ? null : 16.0,
-          top: isTop ? _calculateOffset(overlayEntry, height, spacing, isTop: true) : null,
-          bottom: isTop ? null : _calculateOffset(overlayEntry, height, spacing, isTop: false),
+          // Logic for Horizontal Alignment
+          left: isMobile
+              ? spacing
+              : _getLeftPosition(position!, screenWidth, effectiveWidth),
+          right: isMobile
+              ? spacing
+              : _getRightPosition(position!, screenWidth, effectiveWidth),
+
+          // Logic for Vertical Stacking
+          top: _getTopPosition(position!, safePadding.top,
+              _notifications.indexOf(overlayEntry), itemHeight, itemSpacing),
+          bottom: _getBottomPosition(position, safePadding.bottom,
+              _notifications.indexOf(overlayEntry), itemHeight, itemSpacing),
+
+          // left: isLeft ? 16.0 : null,
+          // right: isLeft ? null : 16.0,
+          // top: isTop ? _calculateOffset(overlayEntry, height, spacing, isTop: true) : null,
+          // bottom: isTop ? null : _calculateOffset(overlayEntry, height, spacing, isTop: false),
           child: NotificationAnimationPosition(
             key: key,
             slideInDirection: slideInDirection,
@@ -217,21 +255,16 @@ class TNotificationOverlay {
 
     // Add the notification entry to the list and insert it into the overlay.
     _notifications.add(overlayEntry);
-    overlay?.insert(overlayEntry);
+    overlay.insert(overlayEntry);
 
     // Automatically remove the notification after the specified duration.
-    if (sticky == null || !sticky) {
-      Future.delayed(
-        duration,
-        () => key.currentState?.animateOut(() => _removeNotification(overlayEntry)),
-      );
+    if (sticky != true) {
+      Future.delayed(duration, () {
+        if (_notifications.contains(overlayEntry)) {
+          key.currentState?.animateOut(() => _removeNotification(overlayEntry));
+        }
+      });
     }
-  }
-
-  static double _calculateOffset(OverlayEntry entry, double height, double spacing, {required bool isTop}) {
-    final index = _notifications.indexOf(entry);
-    final totalOffset = index * (height + spacing);
-    return totalOffset + (isTop ? height : 0.0); // Add margin for padding.
   }
 
   /// Removes a notification from the overlay and updates the positions of the remaining notifications.
@@ -243,10 +276,46 @@ class TNotificationOverlay {
       // Remove the overlay entry from the overlay.
       overlayEntry.remove();
 
-      // Trigger a rebuild of the remaining notifications.
-      for (var entry in _notifications) {
-        entry.markNeedsBuild();
+      // Rebuild remaining to adjust stack positions
+      for (var e in _notifications) {
+        e.markNeedsBuild();
       }
     }
+  }
+
+  // -- HELPER: Position Logic --
+
+  static double? _getLeftPosition(
+      NotificationPosition pos, double screenW, double widgetW) {
+    if (pos == NotificationPosition.topLeft ||
+        pos == NotificationPosition.bottomLeft) return 16.0;
+    if (pos == NotificationPosition.topCenter ||
+        pos == NotificationPosition.bottomCenter) {
+      return (screenW - widgetW) / 2;
+    }
+    return null; // Right aligned
+  }
+
+  static double? _getRightPosition(
+      NotificationPosition pos, double screenW, double widgetW) {
+    if (pos == NotificationPosition.topRight ||
+        pos == NotificationPosition.bottomRight) return 16.0;
+    return null; // Left or Center aligned
+  }
+
+  static double? _getTopPosition(NotificationPosition pos, double safeTop,
+      int index, double height, double spacing) {
+    if (pos.name.startsWith('top')) {
+      return safeTop + 16 + (index * (height + spacing));
+    }
+    return null;
+  }
+
+  static double? _getBottomPosition(NotificationPosition pos, double safeBottom,
+      int index, double height, double spacing) {
+    if (pos.name.startsWith('bottom')) {
+      return safeBottom + 16 + (index * (height + spacing));
+    }
+    return null;
   }
 }
