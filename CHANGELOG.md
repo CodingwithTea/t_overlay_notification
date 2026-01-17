@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 1.1.3
+- Bugs Fixed
+
 ## 1.1.2
 - **New Design System:** Completely redesigned the notification widget with a modern, "Glass/Chip" style aesthetic. Includes a dark-neutral background with color-coded icons and progress bars.
 - **Responsive Positioning:** Added smart responsive logic.
