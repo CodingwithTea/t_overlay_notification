@@ -1,5 +1,10 @@
 # Changelog
 
+# 1.1.4
+- **Feature**: Added `close()` and `closeAll()` methods to programmatically dismiss sticky notifications.
+- **Feature**: Notification methods (`success`, `error`, etc.) now return an `OverlayEntry?` instance, allowing for manual dismissal.
+- **Example Update**: Added a "No Internet" simulation to demonstrate the new `close()` functionality for sticky notifications.
+- **Dependency Update**: Widened Dart SDK compatibility to `>=3.0.0 <4.0.0` and set minimum Flutter version to `>=3.10.0`.
 
 ## 1.1.3
 - Bugs Fixed
