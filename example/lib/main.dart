@@ -33,13 +33,15 @@ class _MyAppState extends State<MyApp> {
                   decoration: BoxDecoration(
                     color: Colors.grey.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+                    border:
+                        Border.all(color: Colors.grey.withValues(alpha: 0.3)),
                   ),
                   child: Column(
                     children: [
                       const Text(
                         "Test 'No Internet' Logic",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -47,28 +49,33 @@ class _MyAppState extends State<MyApp> {
                         children: [
                           // BUTTON 1: Simulate going OFFLINE
                           ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red),
                             onPressed: () {
                               // Only show if not already showing (Prevent stacking)
-                              activeStickyNotification ??= TNotificationOverlay.error(
+                              activeStickyNotification ??=
+                                  TNotificationOverlay.error(
                                 context: context,
                                 title: 'No Internet Connection',
                                 subTitle: 'Waiting for network...',
                                 sticky: true, // <--- Forces it to stay
-
                               );
                             },
-                            child: const Text('Go Offline', style: TextStyle(color: Colors.white)),
+                            child: const Text('Go Offline',
+                                style: TextStyle(color: Colors.white)),
                           ),
 
                           // BUTTON 2: Simulate coming ONLINE
                           ElevatedButton(
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green),
                             onPressed: () {
                               // Close ONLY the sticky notification
                               if (activeStickyNotification != null) {
-                                TNotificationOverlay.close(activeStickyNotification);
-                                activeStickyNotification = null; // Reset variable
+                                TNotificationOverlay.close(
+                                    activeStickyNotification);
+                                activeStickyNotification =
+                                    null; // Reset variable
 
                                 // Show a temporary success message
                                 TNotificationOverlay.success(
@@ -79,7 +86,8 @@ class _MyAppState extends State<MyApp> {
                                 );
                               }
                             },
-                            child: const Text('Go Online', style: TextStyle(color: Colors.white)),
+                            child: const Text('Go Online',
+                                style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),
@@ -99,7 +107,8 @@ class _MyAppState extends State<MyApp> {
                     TNotificationOverlay.success(
                       context: context,
                       title: 'Success Notification',
-                      subTitle: 'This is a success notification. \n Expanding to line two.',
+                      subTitle:
+                          'This is a success notification. \n Expanding to line two.',
                     );
                   },
                   child: Text('Success Notification'),
@@ -110,7 +119,8 @@ class _MyAppState extends State<MyApp> {
                     TNotificationOverlay.warning(
                       context: context,
                       title: ('Warning Notification'),
-                      subTitle: ('This is a Warning notification. \n Expanding to line two.'),
+                      subTitle:
+                          ('This is a Warning notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Warning Notification'),
@@ -121,7 +131,8 @@ class _MyAppState extends State<MyApp> {
                     TNotificationOverlay.error(
                       context: context,
                       title: ('Error Notification'),
-                      subTitle: ('This is a Error notification. \n Expanding to line two.'),
+                      subTitle:
+                          ('This is a Error notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Error Notification'),
@@ -132,7 +143,8 @@ class _MyAppState extends State<MyApp> {
                     TNotificationOverlay.info(
                       context: context,
                       title: ('Info Notification'),
-                      subTitle: ('This is a Info notification. \n Expanding to line two.'),
+                      subTitle:
+                          ('This is a Info notification. \n Expanding to line two.'),
                     );
                   },
                   child: Text('Info Notification'),
@@ -143,7 +155,8 @@ class _MyAppState extends State<MyApp> {
                     TNotificationOverlay.show(
                       context: context,
                       title: ('Default Notification'),
-                      subTitle: ('This is a Default notification. \n At the center.'),
+                      subTitle:
+                          ('This is a Default notification. \n At the center.'),
                     );
                   },
                   child: Text('Default Notification'),
@@ -165,14 +178,16 @@ class _MyAppState extends State<MyApp> {
                         sticky: true,
                         context: context,
                         title: ('Sticky Notification'),
-                        subTitle: 'This is a sticky notification with action Widget',
+                        subTitle:
+                            'This is a sticky notification with action Widget',
                         position: NotificationPosition.topLeft,
                         slideInDirection: SlideDirection.topToBottom,
                         slideOutDirection: SlideDirection.bottomToTop,
                         action: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Choose any options below', style: TextStyle(color: Colors.white)),
+                            Text('Choose any options below',
+                                style: TextStyle(color: Colors.white)),
                             const SizedBox(height: 12),
                             Row(
                               children: [
@@ -183,12 +198,16 @@ class _MyAppState extends State<MyApp> {
                                       style: TextStyle(color: Colors.white),
                                     )),
                                 const SizedBox(width: 8),
-                                TextButton(onPressed: () {}, child: Text('Undo', style: TextStyle(color: Colors.white)))
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text('Undo',
+                                        style: TextStyle(color: Colors.white)))
                               ],
                             ),
                             const SizedBox(height: 12),
                             Text('Close this notification manually.',
-                                style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
                             const SizedBox(height: 12),
                           ],
                         ));
@@ -243,7 +262,10 @@ class _MyAppState extends State<MyApp> {
                                 style: TextStyle(color: Colors.white),
                               )),
                           const SizedBox(width: 8),
-                          TextButton(onPressed: () {}, child: Text('Undo', style: TextStyle(color: Colors.white)))
+                          TextButton(
+                              onPressed: () {},
+                              child: Text('Undo',
+                                  style: TextStyle(color: Colors.white)))
                         ],
                       ),
                       type: NotificationType.info,

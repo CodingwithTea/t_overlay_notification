@@ -170,7 +170,8 @@ class TNotificationOverlay {
     late final OverlayEntry overlayEntry;
 
     // Add a global key to control the position animation.
-    final GlobalKey<NotificationAnimationPositionState> key = GlobalKey<NotificationAnimationPositionState>();
+    final GlobalKey<NotificationAnimationPositionState> key =
+        GlobalKey<NotificationAnimationPositionState>();
 
     // -- RESPONSIVE CALCULATIONS --
     final screenWidth = MediaQuery.of(context).size.width;
@@ -204,14 +205,18 @@ class TNotificationOverlay {
         return AnimatedPositioned(
           duration: Duration(milliseconds: 300),
           // Logic for Horizontal Alignment
-          left: isMobile ? spacing : _getLeftPosition(position!, screenWidth, effectiveWidth),
-          right: isMobile ? spacing : _getRightPosition(position!, screenWidth, effectiveWidth),
+          left: isMobile
+              ? spacing
+              : _getLeftPosition(position!, screenWidth, effectiveWidth),
+          right: isMobile
+              ? spacing
+              : _getRightPosition(position!, screenWidth, effectiveWidth),
 
           // Logic for Vertical Stacking
-          top: _getTopPosition(
-              position!, safePadding.top, _notifications.indexOf(overlayEntry), itemHeight, itemSpacing),
-          bottom: _getBottomPosition(
-              position, safePadding.bottom, _notifications.indexOf(overlayEntry), itemHeight, itemSpacing),
+          top: _getTopPosition(position!, safePadding.top,
+              _notifications.indexOf(overlayEntry), itemHeight, itemSpacing),
+          bottom: _getBottomPosition(position, safePadding.bottom,
+              _notifications.indexOf(overlayEntry), itemHeight, itemSpacing),
 
           // left: isLeft ? 16.0 : null,
           // right: isLeft ? null : 16.0,
@@ -219,8 +224,14 @@ class TNotificationOverlay {
           // bottom: isTop ? null : _calculateOffset(overlayEntry, height, spacing, isTop: false),
           child: NotificationAnimationPosition(
             key: key,
-            slideInDirection: slideInDirection ?? (isMobile ? SlideDirection.bottomToTop : SlideDirection.rightToLeft),
-            slideOutDirection: slideOutDirection ?? (isMobile ? SlideDirection.bottomToTop : SlideDirection.rightToLeft),
+            slideInDirection: slideInDirection ??
+                (isMobile
+                    ? SlideDirection.bottomToTop
+                    : SlideDirection.rightToLeft),
+            slideOutDirection: slideOutDirection ??
+                (isMobile
+                    ? SlideDirection.bottomToTop
+                    : SlideDirection.rightToLeft),
             child: TNotificationWidget(
               title: title,
               subTitle: subTitle,
@@ -282,28 +293,34 @@ class TNotificationOverlay {
 
   // -- HELPER: Position Logic --
 
-  static double? _getLeftPosition(NotificationPosition pos, double screenW, double widgetW) {
-    if (pos == NotificationPosition.topLeft || pos == NotificationPosition.bottomLeft) return 16.0;
-    if (pos == NotificationPosition.topCenter || pos == NotificationPosition.bottomCenter) {
+  static double? _getLeftPosition(
+      NotificationPosition pos, double screenW, double widgetW) {
+    if (pos == NotificationPosition.topLeft ||
+        pos == NotificationPosition.bottomLeft) return 16.0;
+    if (pos == NotificationPosition.topCenter ||
+        pos == NotificationPosition.bottomCenter) {
       return (screenW - widgetW) / 2;
     }
     return null; // Right aligned
   }
 
-  static double? _getRightPosition(NotificationPosition pos, double screenW, double widgetW) {
-    if (pos == NotificationPosition.topRight || pos == NotificationPosition.bottomRight) return 16.0;
+  static double? _getRightPosition(
+      NotificationPosition pos, double screenW, double widgetW) {
+    if (pos == NotificationPosition.topRight ||
+        pos == NotificationPosition.bottomRight) return 16.0;
     return null; // Left or Center aligned
   }
 
-  static double? _getTopPosition(NotificationPosition pos, double safeTop, int index, double height, double spacing) {
+  static double? _getTopPosition(NotificationPosition pos, double safeTop,
+      int index, double height, double spacing) {
     if (pos.name.startsWith('top')) {
       return safeTop + 16 + (index * (height + spacing));
     }
     return null;
   }
 
-  static double? _getBottomPosition(
-      NotificationPosition pos, double safeBottom, int index, double height, double spacing) {
+  static double? _getBottomPosition(NotificationPosition pos, double safeBottom,
+      int index, double height, double spacing) {
     if (pos.name.startsWith('bottom')) {
       return safeBottom + 16 + (index * (height + spacing));
     }

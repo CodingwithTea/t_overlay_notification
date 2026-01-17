@@ -65,7 +65,8 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
     const int updateInterval = 50;
     final double decrementStep = updateInterval / totalDuration;
 
-    _timer = Timer.periodic(const Duration(milliseconds: updateInterval), (timer) {
+    _timer =
+        Timer.periodic(const Duration(milliseconds: updateInterval), (timer) {
       if (!mounted) return;
 
       setState(() {
@@ -110,8 +111,8 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
     final Color effectiveTypeColor = typeColors[widget.type]!;
 
     // Default BG: Dark Grey (Modern Look) OR User provided
-    final Color effectiveBackgroundColor =
-        widget.backgroundColor ?? (isDark ? const Color(0xFF1E1E1E) : const Color(0xFF2C2C2C));
+    final Color effectiveBackgroundColor = widget.backgroundColor ??
+        (isDark ? const Color(0xFF1E1E1E) : const Color(0xFF2C2C2C));
 
     // Default Border: None (cleaner) OR User provided
     final Color? effectiveBorderColor = widget.borderColor;
@@ -124,7 +125,8 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
     final Color effectiveIconColor = widget.iconColor ?? effectiveTypeColor;
 
     final double effectiveWidth = widget.width ?? 350.0;
-    final double effectiveBorderRadius = widget.borderRadius ?? 20.0; // Increased default radius for Chip look
+    final double effectiveBorderRadius =
+        widget.borderRadius ?? 20.0; // Increased default radius for Chip look
     final double effectivePaddingV = widget.paddingVertical ?? 12.0;
     final double effectivePaddingH = widget.paddingHorizontal ?? 16.0;
 
@@ -136,8 +138,9 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
         decoration: BoxDecoration(
           color: effectiveBackgroundColor,
           borderRadius: BorderRadius.circular(effectiveBorderRadius),
-          border:
-              effectiveBorderColor != null ? Border.all(color: effectiveBorderColor) : null, // Clean look by default
+          border: effectiveBorderColor != null
+              ? Border.all(color: effectiveBorderColor)
+              : null, // Clean look by default
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.15),
@@ -154,12 +157,15 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
             children: [
               // -- Content Row --
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: effectivePaddingH, vertical: effectivePaddingV),
+                padding: EdgeInsets.symmetric(
+                    horizontal: effectivePaddingH, vertical: effectivePaddingV),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Align to top for long text
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // Align to top for long text
                   children: [
                     // 1. Icon
-                    Icon(typeIcons[widget.type], color: effectiveIconColor, size: 24),
+                    Icon(typeIcons[widget.type],
+                        color: effectiveIconColor, size: 24),
                     const SizedBox(width: 12),
 
                     // 2. Text & Action (Expanded)
@@ -226,7 +232,8 @@ class _TNotificationWidgetState extends State<TNotificationWidget> {
                   value: _progressValue,
                   minHeight: 2, // Slimmer modern look
                   backgroundColor: Colors.transparent,
-                  color: effectiveTypeColor, // Progress matches the success/error color
+                  color:
+                      effectiveTypeColor, // Progress matches the success/error color
                 ),
             ],
           ),
